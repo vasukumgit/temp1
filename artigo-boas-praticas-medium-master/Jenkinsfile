@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'maven'
+    }
+
+    stages {
+
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/vasukumgit/temp1.git'
+            }
+        }
+
+        stage('Build Maven Project') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+
+    }
+
+    post {
+        success {
+            echo 'Build Successful'
+        }
+        failure {
+            echo 'Build Failed'
+        }
+    }
+}
