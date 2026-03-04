@@ -1,27 +1,30 @@
 pipeline {
-    agent any
+  agent any
 
-    tools {
-        maven 'maven'   // Jenkins: Manage Jenkins > Global Tool Configuration
+  tools {
+    maven 'maven'
+    // jdk 'jdk17'   // enable if you configured JDK tool
+  }
+
+  stages {
+    stage('Checkout') {
+      steps { checkout scm }
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Build') {
-            steps {
-                bat 'mvn -B clean test package'
-            }
-        }
+    stage('Show files') {
+      steps { bat 'dir' }
     }
 
-    post {
-        always {
-            archiveArtifacts artifacts: 'target\\*.jar,target\\*.war', fingerprint: true
-        }
+    stage('Build') {
+      steps {
+        bat 'mvn -B -e clean test package'
+      }
     }
+  }
+
+  post {
+    always {
+      archiveArtifacts artifacts: 'target\\*.jar,target\\*.war', fingerprint: true, allowEmptyArchive: true
+    }
+  }
 }
