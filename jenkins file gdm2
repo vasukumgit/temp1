@@ -5,7 +5,10 @@ pipeline {
 
         stage('Clone') {
             steps {
-                git branch:"main" ,url :'https://github.com/vasukumgit/module-2.git'
+               git(
+            branch: 'main',
+            url: 'https://github.com/vasukumgit/module-2.git'
+            )
             }
         }
 
