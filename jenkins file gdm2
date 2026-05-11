@@ -11,7 +11,7 @@ pipeline {
 
         stage('Backend Install') {
             steps {
-                dir('backend') {
+                dir('Backend') {
                     sh 'npm install'
                 }
             }
@@ -19,7 +19,7 @@ pipeline {
 
         stage('Frontend Build') {
             steps {
-                dir('frontend') {
+                dir('Frontend') {
                     sh 'npm install'
                     sh 'npm run build'
                 }
@@ -28,13 +28,13 @@ pipeline {
 
         stage('Deploy Frontend') {
             steps {
-                sh 'sudo cp -r frontend/dist/* /var/www/html/'
+                sh 'sudo cp -r Frontend/dist/* /var/www/html/'
             }
         }
 
         stage('Restart Backend') {
             steps {
-                dir('backend') {
+                dir('Backend') {
                     sh 'pm2 restart backend || pm2 start server.js --name backend'
                 }
             }
